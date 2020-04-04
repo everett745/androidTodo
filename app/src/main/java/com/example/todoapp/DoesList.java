@@ -22,7 +22,7 @@ public class DoesList {
     }
 
     static void editTodo(MyDoes newTodo) {
-        Log.d("TEST", "GET { " + newTodo.getTitledoes() + " , " + newTodo.getDescdoes() + " , " + newTodo.getDatedoes() + " , " + newTodo.getKeydoes() + " , " + newTodo.getCompleted() + " }");
+        //Log.d("TEST", "GET { " + newTodo.getTitledoes() + " , " + newTodo.getDescdoes() + " , " + newTodo.getDatedoes() + " , " + newTodo.getKeydoes() + " , " + newTodo.getCompleted() + " }");
         for (MyDoes item: DoesList.list)
             if (item.getKeydoes().equals(newTodo.getKeydoes())) DoesList.list.set(DoesList.list.indexOf(item), newTodo);
 
