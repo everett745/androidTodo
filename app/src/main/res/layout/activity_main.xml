@@ -82,17 +82,17 @@
         android:orientation="vertical"
         android:paddingTop="8dp">
 
-        <Button
-            android:id="@+id/btnAddNew"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:layout_gravity="right"
-            android:background="@drawable/bgbtnnew"
-            android:text="+"
-            android:textColor="@color/colorText"
-            android:textSize="38sp" />
     </LinearLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnAddNew"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:clickable="true"
+        app:srcCompat="@drawable/add1" />
 
 
 </RelativeLayout>

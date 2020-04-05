@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     TextView titlepage, subtitlepage, endpage;
-    Button btnAddNew;
+    View btnAddNew;
 
     RecyclerView ourdoes;
     DoesAdapter doesAdapter;
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         titlepage.setTypeface(MMedium);
         subtitlepage.setTypeface(MLight);
 
-        btnAddNew.setTypeface(MLight);
+        //btnAddNew.setTypeface(MLight);
 
         btnAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
