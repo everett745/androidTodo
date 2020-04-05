@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
         titlepage = findViewById(R.id.titlepage);
         subtitlepage = findViewById(R.id.subtitlepage);
-        endpage = findViewById(R.id.endpage);
 
         btnAddNew = findViewById(R.id.btnAddNew);
 
@@ -44,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         // customize font
         titlepage.setTypeface(MMedium);
         subtitlepage.setTypeface(MLight);
-        endpage.setTypeface(MLight);
 
         btnAddNew.setTypeface(MLight);
 
