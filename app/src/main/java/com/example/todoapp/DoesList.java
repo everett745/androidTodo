@@ -22,10 +22,11 @@ public class DoesList {
     }
 
     static void editTodo(MyDoes newTodo) {
-        //Log.d("TEST", "GET { " + newTodo.getTitledoes() + " , " + newTodo.getDescdoes() + " , " + newTodo.getDatedoes() + " , " + newTodo.getKeydoes() + " , " + newTodo.getCompleted() + " }");
-        for (MyDoes item: DoesList.list)
-            if (item.getKeydoes().equals(newTodo.getKeydoes())) DoesList.list.set(DoesList.list.indexOf(item), newTodo);
+        //Log.d("TEST", "GET { " + newTodo.getTitle() + " , " + newTodo.getDescription() + " , " + newTodo.getStart_time() + " , " + newTodo.getEnd_time() + "}");
 
+        for (MyDoes item: DoesList.list) {
+            if (item.getId().equals(newTodo.getId())) DoesList.list.set(DoesList.list.indexOf(item), newTodo);
+        }
         DoesList.saveLocalStorage();
     }
 
@@ -33,7 +34,7 @@ public class DoesList {
         ArrayList<MyDoes> list = new ArrayList<MyDoes>();
 
         for (MyDoes item: DoesList.list)
-            if (!item.getKeydoes().equals(keydoes)) list.add(item);
+            if (!item.getId().equals(keydoes)) list.add(item);
 
         DoesList.setList(list);
     }
@@ -47,7 +48,7 @@ public class DoesList {
 
     static void prList() {
         for (MyDoes item: DoesList.list) {
-            Log.d("TEST", "GET { " + item.getTitledoes() + " , " + item.getDescdoes() + " , " + item.getDatedoes() + " , " + item.getKeydoes() + " }");
+            Log.d("TEST", "GET { " + item.getTitle() + " , " + item.getDescription() + " , " + item.getStart_time() + " , " + item.getEnd_time() + " , " + item.getId() + " }");
         }
     }
 

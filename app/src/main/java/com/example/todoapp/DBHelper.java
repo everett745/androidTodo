@@ -15,8 +15,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final  String KEY_ID = "_id";
     public static final  String KEY_TITLE = "title";
     public static final  String KEY_DESC = "descr";
-    public static final  String KEY_DATE = "date";
-    public static final  String KEY_COMPLETED = "false";
+    public static final  String KEY_START = "dateStart";
+    public static final  String KEY_END = "dateEnd";
 
 
     public DBHelper(@Nullable Context context) {
@@ -29,7 +29,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 + KEY_ID + " text primary key,"
                 + KEY_TITLE + " text,"
                 + KEY_DESC + " text,"
-                + KEY_DATE + " text" + ")"
+                + KEY_START + " text,"
+                + KEY_END + " text" + ")"
         );
     }
 

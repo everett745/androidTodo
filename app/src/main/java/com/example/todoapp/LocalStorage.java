@@ -28,11 +28,11 @@ class LocalStorage {
 
     void addToDo(MyDoes todo) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DBHelper.KEY_ID, Integer.parseInt(todo.getKeydoes()));
-        contentValues.put(DBHelper.KEY_TITLE, todo.getTitledoes());
-        contentValues.put(DBHelper.KEY_DESC, todo.getDescdoes());
-        contentValues.put(DBHelper.KEY_DATE, todo.getDatedoes());
-        //contentValues.put(DBHelper.KEY_COMPLETED, todo.getCompleted().toString());
+        contentValues.put(DBHelper.KEY_ID, Integer.parseInt(todo.getId()));
+        contentValues.put(DBHelper.KEY_TITLE, todo.getTitle());
+        contentValues.put(DBHelper.KEY_DESC, todo.getDescription());
+        contentValues.put(DBHelper.KEY_START, todo.getStart_time());
+        contentValues.put(DBHelper.KEY_END, todo.getEnd_time());
 
         this.database.insert(DBHelper.TABLE, null, contentValues);
     }
@@ -40,10 +40,10 @@ class LocalStorage {
     void editTodo(String id, MyDoes newTodo) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DBHelper.KEY_ID, id);
-        contentValues.put(DBHelper.KEY_TITLE, newTodo.getTitledoes());
-        contentValues.put(DBHelper.KEY_DESC, newTodo.getDescdoes());
-        contentValues.put(DBHelper.KEY_DATE, newTodo.getDatedoes());
-        //contentValues.put(DBHelper.KEY_COMPLETED, newTodo.getCompleted());
+        contentValues.put(DBHelper.KEY_TITLE, newTodo.getTitle());
+        contentValues.put(DBHelper.KEY_DESC, newTodo.getDescription());
+        contentValues.put(DBHelper.KEY_START, newTodo.getStart_time());
+        contentValues.put(DBHelper.KEY_END, newTodo.getEnd_time());
 
         this.database.update(DBHelper.TABLE, contentValues, "_id="+id, null);
     }
@@ -56,11 +56,12 @@ class LocalStorage {
             int idIndex = cursor.getColumnIndex(DBHelper.KEY_ID);
             int titleIndex = cursor.getColumnIndex(DBHelper.KEY_TITLE);
             int descIndex = cursor.getColumnIndex(DBHelper.KEY_DESC);
-            int dateIndex = cursor.getColumnIndex(DBHelper.KEY_DATE);
+            int startIndex = cursor.getColumnIndex(DBHelper.KEY_START);
+            int endIndex = cursor.getColumnIndex(DBHelper.KEY_END);
 
             do {
 
-                MyDoes p = new MyDoes(cursor.getString(titleIndex), cursor.getString(dateIndex), cursor.getString(descIndex), cursor.getString(idIndex));
+                MyDoes p = new MyDoes(cursor.getString(idIndex), cursor.getString(startIndex), cursor.getString(endIndex),cursor.getString(titleIndex), cursor.getString(descIndex));
                 list.add(p);
             } while (cursor.moveToNext());
 

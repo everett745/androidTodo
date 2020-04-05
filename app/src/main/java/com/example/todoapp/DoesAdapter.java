@@ -38,14 +38,16 @@ public class DoesAdapter extends RecyclerView.Adapter<DoesAdapter.MyViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int i) {
-        myViewHolder.titledoes.setText(myDoes.get(i).getTitledoes());
-        myViewHolder.descdoes.setText(myDoes.get(i).getDescdoes());
-        myViewHolder.datedoes.setText(myDoes.get(i).getDatedoes());
+        myViewHolder.title.setText(myDoes.get(i).getTitle());
+        myViewHolder.description.setText(myDoes.get(i).getDescription());
+        myViewHolder.startTime.setText(myDoes.get(i).getStart_time());
+        myViewHolder.endTime.setText(myDoes.get(i).getEnd_time());
 
-        final String getTitleDoes = myDoes.get(i).getTitledoes();
-        final String getDescDoes = myDoes.get(i).getDescdoes();
-        final String getDateDoes = myDoes.get(i).getDatedoes();
-        final String getKeyDoes = myDoes.get(i).getKeydoes();
+        final String getTitle = myDoes.get(i).getTitle();
+        final String getDescription = myDoes.get(i).getDescription();
+        final String getStart_time = myDoes.get(i).getStart_time();
+        final String getEnd_time = myDoes.get(i).getEnd_time();
+        final String getID = myDoes.get(i).getId();
 
 
 
@@ -53,10 +55,11 @@ public class DoesAdapter extends RecyclerView.Adapter<DoesAdapter.MyViewHolder> 
             @Override
             public void onClick(View v) {
                 Intent aa = new Intent(context, EditTask.class);
-                aa.putExtra("titledoes", getTitleDoes);
-                aa.putExtra("descdoes", getDescDoes);
-                aa.putExtra("datedoes", getDateDoes);
-                aa.putExtra("keydoes", getKeyDoes);
+                aa.putExtra("title", getTitle);
+                aa.putExtra("description", getDescription);
+                aa.putExtra("startTime", getStart_time);
+                aa.putExtra("endTime", getEnd_time);
+                aa.putExtra("ID", getID);
 
                 context.startActivity(aa);
             }
@@ -115,7 +118,7 @@ public class DoesAdapter extends RecyclerView.Adapter<DoesAdapter.MyViewHolder> 
             public boolean onLongClick(View v) {
                 Intent aa = new Intent(context, MainActivity.class);
                 if (myDoes.get(i).getCompleted())
-                    DoesList.removeTodo(getKeyDoes);
+                    DoesList.removeTodo(getID);
 
                 context.startActivity(aa);
                 return true;
@@ -151,14 +154,15 @@ public class DoesAdapter extends RecyclerView.Adapter<DoesAdapter.MyViewHolder> 
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView titledoes, descdoes, datedoes;
+        TextView title, description, startTime, endTime;
         CheckBox checkBox;
 
         public MyViewHolder(@NonNull final View itemView) {
             super(itemView);
-            titledoes = (TextView) itemView.findViewById(R.id.titledoes);
-            descdoes = (TextView) itemView.findViewById(R.id.descdoes);
-            datedoes = (TextView) itemView.findViewById(R.id.dateStart);
+            title = (TextView) itemView.findViewById(R.id.titledoes);
+            description = (TextView) itemView.findViewById(R.id.descdoes);
+            startTime = (TextView) itemView.findViewById(R.id.dateStart);
+            endTime = (TextView) itemView.findViewById(R.id.dateEnd);
             checkBox = (CheckBox) itemView.findViewById(R.id.checkBox);
         }
     }

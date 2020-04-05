@@ -21,7 +21,7 @@ import java.util.Random;
 public class NewTaskAct extends AppCompatActivity {
 
     TextView titlepage, addtitle, adddesc, adddate;
-    EditText titledoes, descdoes, datedoes;
+    EditText title, description, start_time, end_time;
     Button btnSaveTask, btnCancel;
     String doesNum = Integer.toString(new Random().nextInt(15000));
 
@@ -38,18 +38,24 @@ public class NewTaskAct extends AppCompatActivity {
         adddesc = findViewById(R.id.adddesc);
         adddate = findViewById(R.id.adddate);
 
-        titledoes = findViewById(R.id.titledoes);
-        descdoes = findViewById(R.id.descdoes);
-        datedoes = findViewById(R.id.datedoes);
+        title = findViewById(R.id.titledoes);
+        description = findViewById(R.id.descdoes);
+        start_time = findViewById(R.id.dateStart);
+        end_time = findViewById(R.id.dateEnd);
 
         btnSaveTask = findViewById(R.id.btnSaveTask);
         btnCancel = findViewById(R.id.btnCancel);
 
-        datedoes.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        start_time.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus)
-                    setDate(v);
+                if (hasFocus) setDate();
+            }
+        });
+        end_time.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) setDate1();
             }
         });
 
@@ -60,11 +66,13 @@ public class NewTaskAct extends AppCompatActivity {
                 // get data from dataList
                 ArrayList<MyDoes> li = DoesList.getList();
                 // add data in dataList
-                li.add(new MyDoes(titledoes.getText().toString(), datedoes.getText().toString(), descdoes.getText().toString(), doesNum));
+                li.add(new MyDoes(doesNum, start_time.getText().toString(), end_time.getText().toString(), title.getText().toString(), description.getText().toString()));
+                Log.d("TAG", "NEW   " + doesNum + " , " +  start_time.getText().toString() + " , " + end_time.getText().toString() + " , " + title.getText().toString() + " , " + description.getText().toString());
                 // set data in dataList
                 DoesList.setList(li);
 
                 Intent a = new Intent(NewTaskAct.this, MainActivity.class);
+                finish();
                 startActivity(a);
             }
         });
@@ -77,21 +85,33 @@ public class NewTaskAct extends AppCompatActivity {
         titlepage.setTypeface(MMedium);
 
         addtitle.setTypeface(MLight);
-        titledoes.setTypeface(MMedium);
+        title.setTypeface(MMedium);
 
         adddesc.setTypeface(MLight);
-        descdoes.setTypeface(MMedium);
+        description.setTypeface(MMedium);
 
         adddate.setTypeface(MLight);
-        datedoes.setTypeface(MMedium);
+        start_time.setTypeface(MMedium);
+        end_time.setTypeface(MMedium);
 
         btnSaveTask.setTypeface(MMedium);
         btnCancel.setTypeface(MLight);
 
     }
 
-    // отображаем диалоговое окно для выбора даты
-    public void setDate(View v) {
+    // вызов окна смены даты START
+    public void setDate() {
+        // установка обработчика выбора даты
+        DatePickerDialog.OnDateSetListener d=new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                dateAndTime.set(Calendar.YEAR, year);
+                dateAndTime.set(Calendar.MONTH, monthOfYear);
+                dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                start_time.setText(DateUtils.formatDateTime(NewTaskAct.this,
+                        dateAndTime.getTimeInMillis(),
+                        DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR));
+            }
+        };
         new DatePickerDialog(NewTaskAct.this, d,
                 dateAndTime.get(Calendar.YEAR),
                 dateAndTime.get(Calendar.MONTH),
@@ -100,20 +120,23 @@ public class NewTaskAct extends AppCompatActivity {
     }
 
 
-    // установка начальных даты и времени
-    private void setInitialDateTime() {
-        datedoes.setText(DateUtils.formatDateTime(this,
-                dateAndTime.getTimeInMillis(),
-                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR));
+    // вызов окна смены даты END
+    public void setDate1() {
+        // установка обработчика выбора даты
+        DatePickerDialog.OnDateSetListener d=new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                dateAndTime.set(Calendar.YEAR, year);
+                dateAndTime.set(Calendar.MONTH, monthOfYear);
+                dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                end_time.setText(DateUtils.formatDateTime(NewTaskAct.this,
+                        dateAndTime.getTimeInMillis(),
+                        DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR));
+            }
+        };
+        new DatePickerDialog(NewTaskAct.this, d,
+                dateAndTime.get(Calendar.YEAR),
+                dateAndTime.get(Calendar.MONTH),
+                dateAndTime.get(Calendar.DAY_OF_MONTH))
+                .show();
     }
-
-    // установка обработчика выбора даты
-    DatePickerDialog.OnDateSetListener d=new DatePickerDialog.OnDateSetListener() {
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            dateAndTime.set(Calendar.YEAR, year);
-            dateAndTime.set(Calendar.MONTH, monthOfYear);
-            dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            setInitialDateTime();
-        }
-    };
 }
