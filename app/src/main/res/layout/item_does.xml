@@ -42,28 +42,28 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp">
+            android:layout_marginRight="8dp"
+            android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/datedoes"
+                android:id="@+id/dateStart"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
+                android:layout_height="20dp"
                 android:gravity="right"
-                android:layout_marginRight="8dp"
+                android:layout_marginTop="20dp"
                 android:text="Tomorrow"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/removeBtn"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginLeft="70dp"
-                android:clickable="true"
-                android:visibility="invisible"
-                app:srcCompat="@android:drawable/ic_menu_delete" />
+            <TextView
+                android:id="@+id/dateEnd"
+                android:layout_marginTop="50dp"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:gravity="right"
+                android:text="Tomorrow"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp" />
 
         </RelativeLayout>
 

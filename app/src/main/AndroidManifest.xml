@@ -18,6 +18,8 @@
         </activity>
 		<activity android:name=".NewTaskAct" />
 		<activity android:name=".EditTask" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegistActivity" />
     </application>
 
 </manifest>

@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         doesAdapter = new DoesAdapter(MainActivity.this, DoesList.getList());
         ourdoes.setAdapter(doesAdapter);
         doesAdapter.notifyDataSetChanged();
-
     }
 }
 

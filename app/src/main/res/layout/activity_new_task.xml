@@ -123,7 +123,7 @@
                 android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/datedoes"
+                android:id="@+id/dateStart"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:background="@drawable/bginputtask"
@@ -153,7 +153,7 @@
                 android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/enddatedoes"
+                android:id="@+id/dateEnd"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:background="@drawable/bginputtask"

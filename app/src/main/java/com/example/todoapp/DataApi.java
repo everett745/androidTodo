@@ -1,16 +1,11 @@
 package com.example.todoapp;
 
-import android.accessibilityservice.AccessibilityService;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,8 +17,22 @@ import java.util.ArrayList;
 
 public class DataApi {
 
+    HttpClient httpClient = new HttpClient();
+
+
+
+
+
+
+
+
+
+    /*   FIREBASE  */
+/*
+
     private static DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("does");
     private static DoesAdapter doesAdapter;
+
 
 
     public static ArrayList<MyDoes> getToDos(final Context context) {
@@ -93,4 +102,6 @@ public class DataApi {
         return activeNetwork.isConnectedOrConnecting();
     }
 
+
+     */
 }
