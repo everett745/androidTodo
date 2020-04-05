@@ -6,33 +6,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F4F4"
     tools:context=".MainActivity">
     
     
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:background="@color/colorPrimaryDark"
-        android:layout_height="198dp">
+        android:background="@color/colorPrimary"
+        android:layout_height="200dp">
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="20dp">
 
             <LinearLayout
-                android:layout_marginLeft="16dp"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/titlepage"
-                    android:layout_marginTop="20dp"
                     android:textSize="32sp"
-                    android:textColor="#FFF"
-                    android:text="Делишки блять"
+                    android:textColor="@color/colorText"
+                    android:text="Задачи"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -40,54 +40,61 @@
                     android:id="@+id/subtitlepage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="5dp"
                     android:text="Давай закончим это поскорей"
-                    android:textColor="#4A4E6A"
+                    android:textColor="@color/colorLightText"
                     android:textSize="18sp" />
                 
             </LinearLayout>
-
-            <Button
-                android:id="@+id/btnAddNew"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:layout_marginLeft="55dp"
-                android:layout_marginTop="35dp"
-                android:background="@drawable/bgbtnnew"
-                android:text="+"
-                android:textAlignment="center"
-                android:textColor="#FFF"
-                android:textSize="38sp" />
 
         </LinearLayout>
 
         <View
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:background="#131E69"
+            android:background="@color/colorPrimaryDark"
             android:layout_height="1dp" />
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ourdoes"
+        android:scrollbarTrackVertical="@color/colorLightText"
         android:layout_width="match_parent"
         android:layout_marginTop="-60dp"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_height="wrap_content">
-
+        android:layout_height="430dp">
     </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
         android:id="@+id/endpage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Больше нечего делать"
-        android:textAlignment="center"
-        android:textColor="#9A9A9A"
-        android:textSize="16sp" />
+        android:layout_width="match_parent"
+        android:background="@color/colorLightText"
+        android:layout_height="1dp" />
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:orientation="vertical"
+            android:paddingBottom="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true">
 
+            <Button
+                android:id="@+id/btnAddNew"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_gravity="right"
+                android:background="@drawable/bgbtnnew"
+                android:text="+"
+                android:textColor="@color/colorText"
+                android:textSize="38sp" />
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
