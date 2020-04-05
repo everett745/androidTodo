@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorLightText">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="Регистрация"
+                android:textSize="36sp"/>
+
+            <EditText
+                android:id="@+id/login"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@drawable/bginputtask"
+                android:hint="Логин"
+                android:inputType="text"
+                android:paddingLeft="12dp"
+                android:textColor="@color/colorSecondaryText"
+                android:textColorHint="@color/colorLightText" />
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@drawable/bginputtask"
+                android:hint="Пароль"
+                android:inputType="text"
+                android:paddingLeft="12dp"
+                android:textColor="@color/colorSecondaryText"
+                android:textColorHint="@color/colorLightText" />
+
+            <EditText
+                android:id="@+id/passwordRepeat"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@drawable/bginputtask"
+                android:hint="Повторите пароль"
+                android:inputType="text"
+                android:paddingLeft="12dp"
+                android:textColor="@color/colorSecondaryText"
+                android:textColorHint="@color/colorLightText" />
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bgbtncreate"
+                android:text="Зарегестрироваться"
+                android:textColor="@color/colorText"
+                android:textSize="22sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="55dp"
+            android:layout_alignParentBottom="true">
+
+            <View
+                android:id="@+id/endpage"
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimaryDark"
+                android:layout_height="1dp" />
+        </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:textColor="@color/colorSecondaryText"
+        android:text="Уже есть аккаунт?"
+        android:textSize="22sp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"/>
+
+    <Button
+        android:id="@+id/btnReg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+
+        android:textAllCaps="false"
+        android:text="Войти"
+        android:background="#00000000"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="22sp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+</LinearLayout>
