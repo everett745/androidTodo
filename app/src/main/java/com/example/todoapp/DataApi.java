@@ -1,107 +1,185 @@
 package com.example.todoapp;
 
-import android.app.Activity;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.widget.Toast;
+import android.content.Intent;
+import android.os.Build;
+import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class DataApi {
 
-    HttpClient httpClient = new HttpClient();
+    public static void getUserTodo() {
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("http://195.133.196.6:2000/" + LoginApi.getLogin())
+                .header("Authorization", "Basic " + LoginApi.getLogin())
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override public void onFailure(Call call, IOException e) {
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override public void onResponse(Call call, Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                    try {
+                        String jsonData = response.body().string();
+                        JSONObject Jobject = new JSONObject(jsonData);
+                        JSONArray Jarray = Jobject.getJSONArray("events");
+
+                        ArrayList<MyDoes> list = new ArrayList<MyDoes>();
+                        for (int i = 0; i < Jarray.length(); i++) {
+                            JSONObject object = Jarray.getJSONObject(i);
+
+                            MyDoes item = new MyDoes((String) object.get("id"), object.get("startTime").toString(), object.get("endTime").toString(), (String) object.get("title"), (String) object.get("description"));
+                            list.add(item);
+                        }
+
+                        DoesList.verifyData(list);
+
+                    } catch (Throwable e) {
+                        Log.d("TAGT", "onResponse: " + e.toString());
+                    }
 
 
-
-
-
-
-
-
-
-    /*   FIREBASE  */
-/*
-
-    private static DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("does");
-    private static DoesAdapter doesAdapter;
-
-
-
-    public static ArrayList<MyDoes> getToDos(final Context context) {
-        final ArrayList<MyDoes> list = new ArrayList<MyDoes>();
-
-        reference.addValueEventListener(new ValueEventListener() {
-             public void onDataChange(DataSnapshot dataSnapshot) {
-                // set code to retrive data and replace layout
-                for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren())
-                {
-                    MyDoes p = dataSnapshot1.getValue(MyDoes.class);
-                    list.add(p);
+                } catch (Throwable e) {
+                    Log.d("TAGT", "ERROR" + e.toString());
                 }
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // set code to show an error
-                Toast.makeText(context, "No Data", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        return list;
-    }
-
-    public static void addToDo(final MyDoes todo, final Activity act) {
-        DatabaseReference ref = reference.child("do" + todo.getKeydoes());
-
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                dataSnapshot.getRef().child("titledoes").setValue(todo.getTitledoes());
-                dataSnapshot.getRef().child("descdoes").setValue(todo.getDescdoes());
-                dataSnapshot.getRef().child("datedoes").setValue(todo.getDatedoes());
-                dataSnapshot.getRef().child("keydoes").setValue(todo.getTitledoes());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
         });
     }
 
-    public static void editToDo(final MyDoes todo, final Activity act) {
-        DatabaseReference ref = reference.child("do" + todo.getKeydoes());
+    public static void addEvent(MyDoes event) {
+        OkHttpClient client = new OkHttpClient();
 
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                dataSnapshot.getRef().child("titledoes").setValue(todo.getTitledoes());
-                dataSnapshot.getRef().child("descdoes").setValue(todo.getDescdoes());
-                dataSnapshot.getRef().child("datedoes").setValue(todo.getDatedoes());
+        JSONObject Jobject = new JSONObject();
+        try {
+            Jobject.put("start_time", event.getStart_time());
+            Jobject.put("end_time", event.getEnd_time());
+            Jobject.put("title", event.getTitle());
+            Jobject.put("description", event.getDescription());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(JSON, Jobject.toString());
+
+        Request request = new Request.Builder()
+                .url("http://195.133.196.6:2000/" + LoginApi.getLogin() + "/event")
+                .put(body) // PUT here.
+                .header("Authorization", "Basic " + LoginApi.getPassword())
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override public void onFailure(Call call, IOException e) {
+                Log.d("TAGT", "ERROR : " + e);
             }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+            @Override public void onResponse(Call call, Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
+                    try {
+                        String jsonData = response.body().string();
+                        JSONObject Jobject = new JSONObject(jsonData);
+                        String serverId = Jobject.getString("id");
+
+                        DoesList.editTodoId(event, serverId);
+
+                    } catch (Throwable e) {
+                        Log.d("TAGT", "onResponse: " + e.toString());
+                    }
+                }
             }
         });
     }
 
-    protected boolean isOnline(Context context) {
-        ConnectivityManager cm =(ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork.isConnectedOrConnecting();
+    public static void removeEvent(MyDoes event) {
+        OkHttpClient client = new OkHttpClient();
+
+        JSONObject Jobject = new JSONObject();
+        try {
+            Jobject.put("id", Integer.parseInt(event.getId()));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(JSON, Jobject.toString());
+
+        Request request = new Request.Builder()
+                .url("http://195.133.196.6:2000/" + LoginApi.getLogin() + "/event")
+                .delete(body) // PUT here.
+                .header("Authorization", "Basic " + LoginApi.getPassword())
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override public void onFailure(Call call, IOException e) {
+                Log.d("TAGT", "ERROR : " + e);
+            }
+
+            @Override public void onResponse(Call call, Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+                }
+            }
+        });
     }
 
+    public static void editTodo(MyDoes event) {
+        OkHttpClient client = new OkHttpClient();
 
-     */
+        JSONObject Jobject = new JSONObject();
+        try {
+            Jobject.put("id", event.getId());
+            Jobject.put("start_time", event.getStart_time());
+            Jobject.put("end_time", event.getEnd_time());
+            Jobject.put("title", event.getTitle());
+            Jobject.put("description", event.getDescription());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(JSON, Jobject.toString());
+
+        Request request = new Request.Builder()
+                .url("http://195.133.196.6:2000/" + LoginApi.getLogin() + "/event")
+                .post(body) // PUT here.
+                .header("Authorization", "Basic " + LoginApi.getPassword())
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override public void onFailure(Call call, IOException e) {
+                Log.d("TAGT", "ERROR : " + e);
+            }
+
+            @Override public void onResponse(Call call, Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+                }
+            }
+        });
+    }
+
 }

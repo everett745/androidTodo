@@ -56,7 +56,7 @@ public class RegistActivity extends AppCompatActivity {
                     Request request = new Request.Builder()
                             .url("http://195.133.196.6:2000/" + login.getText().toString())
                             .put(formBody) // PUT here.
-                            .header("Authorization", "Basic" + password.getText().toString())
+                            .header("Authorization", "Basic " + password.getText().toString())
                             .build();
 
                     client.newCall(request).enqueue(new Callback() {

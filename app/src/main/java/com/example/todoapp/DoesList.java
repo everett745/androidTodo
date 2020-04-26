@@ -13,43 +13,111 @@ public class DoesList {
     DoesList(Context context) {
         ls = new LocalStorage(context);
         DoesList.list = ls.readDb();
+
+        /* СИНХРОНИЗАЦИЯ С СЕРВЕР, ПОКА ОТКЛЮЧЕНО */
+        //if (LoginApi.getLogin() != "") DataApi.getUserTodo();
     }
 
     static ArrayList<MyDoes> getList() {return list;}
-    static void setList(ArrayList<MyDoes> list) {
-        DoesList.list = list;
-        DoesList.saveLocalStorage();
+    static void setList(ArrayList<MyDoes> list) {}
+
+    /* ДОБАВИТЬ EVENT */
+    static void addTodo(MyDoes event) {
+        DoesList.list.add(event);
+        DoesList.ls.addToDo(event);
+        DataApi.addEvent(event);
     }
 
+    /* РЕДАКТИРОВАТЬ EVENT */
     static void editTodo(MyDoes newTodo) {
-        //Log.d("TEST", "GET { " + newTodo.getTitle() + " , " + newTodo.getDescription() + " , " + newTodo.getStart_time() + " , " + newTodo.getEnd_time() + "}");
-
         for (MyDoes item: DoesList.list) {
-            if (item.getId().equals(newTodo.getId())) DoesList.list.set(DoesList.list.indexOf(item), newTodo);
+            if (item.getId().equals(newTodo.getId())) {
+                DoesList.ls.editTodo(newTodo);
+                DoesList.list.set(DoesList.list.indexOf(item), newTodo);
+                DataApi.editTodo(newTodo);
+            }
         }
-        DoesList.saveLocalStorage();
+        //prList();
+        DoesList.ls.readDb();
     }
 
+    /* УДАЛИТЬ EVENT */
     public static void removeTodo(String keydoes) {
         ArrayList<MyDoes> list = new ArrayList<MyDoes>();
 
         for (MyDoes item: DoesList.list)
-            if (!item.getId().equals(keydoes)) list.add(item);
-
-        DoesList.setList(list);
+            if (item.getId().equals(keydoes)) {
+                list.remove(item);
+                DoesList.ls.removeTodo(item);
+                DataApi.removeEvent(item);
+            }
     }
 
-
-    private static void saveLocalStorage() {
-        DoesList.ls.clearDB();
-        DoesList.ls.addToDos(list);
-    }
-
-
-    static void prList() {
+    /* ИЗМЕНИТЬ ID У EVENT, НЕБХОДИМО ДЛЯ СИНХРОНИЗАЦИИ ЛОКАЛЬНОГО ID И ID СЕРВЕРА */
+    static void editTodoId(MyDoes newTodo, String id) {
         for (MyDoes item: DoesList.list) {
-            Log.d("TEST", "GET { " + item.getTitle() + " , " + item.getDescription() + " , " + item.getStart_time() + " , " + item.getEnd_time() + " , " + item.getId() + " }");
+            if (item.getId().equals(newTodo.getId())) {
+                DoesList.ls.removeTodo(newTodo);
+                newTodo.setId(id);
+                DoesList.list.set(DoesList.list.indexOf(item), newTodo);
+                DoesList.ls.addToDo(newTodo);
+            }
         }
     }
 
+    /* ПОЛУЧИТЬ EVENT ПО ID */
+    static MyDoes getById(String id) {
+        for (MyDoes item: DoesList.list)
+            if (item.getId().equals(id)) return item;
+        return null;
+    }
+
+    /* ИЗМЕНЯЕТ ЗНАЧЕНИЕ COMPLETED НА ПРОТИВОПОЛОЖНОЕ */
+    public static void switchCompleted(MyDoes item) {
+        item.setCompleted(!item.getCompleted());
+        editTodo(item);
+    }
+
+    // WORK WITH SERVER
+
+    /* ПРОВЕРЯЕТ ЕСТЬ ЛИ ЛОКАЛЬНЫЙ EVENT С ТАКИМ ID */
+    public static boolean checkEventById(String id) {
+        for (MyDoes item: DoesList.list)
+            if (item.getId().equals(id)) return true;
+        return false;
+    }
+
+    /* СИНХРОНИЗАЦИЯ С СЕРВЕРОМ */
+    public static void verifyData(ArrayList<MyDoes> serverData)  {
+        if (DoesList.list.size() == 0 && serverData.size() == 0 || DoesList.list.size() == 0)
+            return;
+        else if (DoesList.list.size() != 0 && serverData.size() == 0) {
+            for (MyDoes item: DoesList.list) {
+                DataApi.addEvent(item);
+            }
+
+            return;
+        } else {
+            for (MyDoes item: serverData)
+                if (checkEventById(item.getId()))
+                    DataApi.editTodo(getById(item.getId()));
+                else DataApi.removeEvent(item);
+
+            for (MyDoes item: DoesList.list) {
+                boolean check = false;
+                for (MyDoes itemS: serverData) {
+                    if (item.getId().equals(itemS.getId())) check = true;
+                }
+                if (!check) DataApi.addEvent(item);
+            }
+        }
+    }
+
+
+    // PRINT EVENT
+    static void prList() {
+        for (MyDoes item: DoesList.list) {
+            Log.d("TAGT", "GET { " + item.getTitle() + " , " + item.getDescription() + " , " + item.getStart_time() + " , " + item.getEnd_time() + " , " + item.getId() + " , " + item.getCompleted() + " }");
+        }
+    }
 }

@@ -2,8 +2,11 @@ package com.example.todoapp;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
@@ -11,18 +14,53 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Random;
+
+import cz.msebera.android.httpclient.NameValuePair;
+import cz.msebera.android.httpclient.client.ClientProtocolException;
+import cz.msebera.android.httpclient.client.entity.UrlEncodedFormEntity;
+import cz.msebera.android.httpclient.client.methods.CloseableHttpResponse;
+import cz.msebera.android.httpclient.client.methods.HttpPost;
+import cz.msebera.android.httpclient.impl.client.CloseableHttpClient;
+import cz.msebera.android.httpclient.impl.client.HttpClients;
+import cz.msebera.android.httpclient.message.BasicNameValuePair;
+import cz.msebera.android.httpclient.util.EntityUtils;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class NewTaskAct extends AppCompatActivity {
 
     TextView titlepage, addtitle, adddesc, adddate;
     EditText title, description, start_time, end_time;
     Button btnSaveTask, btnCancel;
+    Long unixDateStart;
+    Long unixDateEnd;
     String doesNum = Integer.toString(new Random().nextInt(15000));
 
     Calendar dateAndTime=Calendar.getInstance();
@@ -63,16 +101,11 @@ public class NewTaskAct extends AppCompatActivity {
         btnSaveTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // get data from dataList
-                ArrayList<MyDoes> li = DoesList.getList();
-                // add data in dataList
-                li.add(new MyDoes(doesNum, start_time.getText().toString(), end_time.getText().toString(), title.getText().toString(), description.getText().toString()));
-                Log.d("TAG", "NEW   " + doesNum + " , " +  start_time.getText().toString() + " , " + end_time.getText().toString() + " , " + title.getText().toString() + " , " + description.getText().toString());
-                // set data in dataList
-                DoesList.setList(li);
+                MyDoes event = new MyDoes(doesNum, unixDateStart.toString(), unixDateEnd.toString(), title.getText().toString(), description.getText().toString());
+                DoesList.addTodo(event);
 
                 Intent a = new Intent(NewTaskAct.this, MainActivity.class);
-                finish();
+                //finish();
                 startActivity(a);
             }
         });
@@ -101,12 +134,16 @@ public class NewTaskAct extends AppCompatActivity {
 
     // вызов окна смены даты START
     public void setDate() {
+        final long[] unixTimestamp = {0};
         // установка обработчика выбора даты
         DatePickerDialog.OnDateSetListener d=new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 dateAndTime.set(Calendar.YEAR, year);
                 dateAndTime.set(Calendar.MONTH, monthOfYear);
                 dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                unixDateStart = dateAndTime.getTimeInMillis() / 1000L;
+
                 start_time.setText(DateUtils.formatDateTime(NewTaskAct.this,
                         dateAndTime.getTimeInMillis(),
                         DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR));
@@ -122,12 +159,16 @@ public class NewTaskAct extends AppCompatActivity {
 
     // вызов окна смены даты END
     public void setDate1() {
+        final long[] unixTimestamp = {0};
         // установка обработчика выбора даты
         DatePickerDialog.OnDateSetListener d=new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 dateAndTime.set(Calendar.YEAR, year);
                 dateAndTime.set(Calendar.MONTH, monthOfYear);
                 dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                unixDateEnd = dateAndTime.getTimeInMillis() / 1000L;
+
                 end_time.setText(DateUtils.formatDateTime(NewTaskAct.this,
                         dateAndTime.getTimeInMillis(),
                         DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR));

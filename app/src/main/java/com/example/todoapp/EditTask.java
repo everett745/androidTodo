@@ -3,17 +3,37 @@ package com.example.todoapp;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class EditTask extends AppCompatActivity {
 
@@ -21,9 +41,11 @@ public class EditTask extends AppCompatActivity {
     EditText title, description, start_time, end_time;
     Button btnSaveTask, btnCancel;
     String keydoes;
+    String unixDateStart, unixDateEnd;
 
     Calendar dateAndTime=Calendar.getInstance();
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,19 +81,31 @@ public class EditTask extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
+        unixDateStart = intent.getStringExtra("startTime");
+        unixDateEnd = intent.getStringExtra("endTime");
+
+        try {
+            Date start = new Date(Integer.parseInt(unixDateStart) * 1000L);
+            Date end = new Date(Integer.parseInt(unixDateEnd) * 1000L);
+
+            String pattern = "dd.MM.yyyy";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+            start_time.setText(simpleDateFormat.format(start));
+            end_time.setText(simpleDateFormat.format(end));
+        } catch (Throwable e) {
+        }
+
 
         title.setText(intent.getStringExtra("title"));
         description.setText(intent.getStringExtra("description"));
-        start_time.setText(intent.getStringExtra("startTime"));
-        end_time.setText(intent.getStringExtra("endTime"));
         description.setText(intent.getStringExtra("description"));
         keydoes = intent.getStringExtra("ID");
 
         btnSaveTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // set in DoesList
-                DoesList.editTodo(new MyDoes(keydoes, start_time.getText().toString(), end_time.getText().toString(), title.getText().toString(), description.getText().toString()));
+                DoesList.editTodo(new MyDoes(keydoes, unixDateStart, unixDateEnd, title.getText().toString(), description.getText().toString()));
 
                 Intent a = new Intent(EditTask.this, MainActivity.class);
                 finish();
@@ -110,6 +144,9 @@ public class EditTask extends AppCompatActivity {
                 dateAndTime.set(Calendar.YEAR, year);
                 dateAndTime.set(Calendar.MONTH, monthOfYear);
                 dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                unixDateStart = Long.toString(dateAndTime.getTimeInMillis() / 1000L);
+
                 start_time.setText(DateUtils.formatDateTime(EditTask.this,
                         dateAndTime.getTimeInMillis(),
                         DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR));
@@ -131,6 +168,9 @@ public class EditTask extends AppCompatActivity {
                 dateAndTime.set(Calendar.YEAR, year);
                 dateAndTime.set(Calendar.MONTH, monthOfYear);
                 dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                unixDateEnd = Long.toString(dateAndTime.getTimeInMillis() / 1000L);
+
                 end_time.setText(DateUtils.formatDateTime(EditTask.this,
                         dateAndTime.getTimeInMillis(),
                         DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR));

@@ -9,14 +9,15 @@ import androidx.annotation.Nullable;
 public class DBHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
-    public static final  String DATABASE_NAME = "does";
-    public static final  String TABLE = "do";
+    public static final String DATABASE_NAME = "does";
+    public static final String TABLE = "do";
 
-    public static final  String KEY_ID = "_id";
-    public static final  String KEY_TITLE = "title";
-    public static final  String KEY_DESC = "descr";
-    public static final  String KEY_START = "dateStart";
-    public static final  String KEY_END = "dateEnd";
+    public static final String KEY_ID = "_id";
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_DESC = "descr";
+    public static final String KEY_START = "dateStart";
+    public static final String KEY_END = "dateEnd";
+    public static final String KEY_COMPLETED =  "false";
 
 
     public DBHelper(@Nullable Context context) {
@@ -30,7 +31,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 + KEY_TITLE + " text,"
                 + KEY_DESC + " text,"
                 + KEY_START + " text,"
-                + KEY_END + " text" + ")"
+                + KEY_END + " text,"
+                + KEY_COMPLETED + " text" + ")"
         );
     }
 

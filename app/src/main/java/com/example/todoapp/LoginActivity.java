@@ -51,20 +51,18 @@ public class LoginActivity extends AppCompatActivity {
 
                 Request request = new Request.Builder()
                         .url("http://195.133.196.6:2000/" + login.getText().toString())
-                        .header("Authorization", "Basic" + password.getText().toString())
+                        .header("Authorization", "Basic " + password.getText().toString())
                         .build();
 
                 client.newCall(request).enqueue(new Callback() {
                     @Override public void onFailure(Call call, IOException e) {
                         Log.d("TAGT", "ERROR " + e.toString());
-
                         //Toast.makeText(LoginActivity.this, "Неверные логин или пароль", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override public void onResponse(Call call, Response response) throws IOException {
                         try (ResponseBody responseBody = response.body()) {
                             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
 
                             SharedPreferences myPref;
                             myPref = getSharedPreferences("user", MODE_PRIVATE);
@@ -73,25 +71,28 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putString("psw", password.getText().toString());
                             editor.commit();
 
-                            Log.d("TAGT", "response: " + response);
+                            //Log.d("TAGT", "response: " + response);
                             //Toast.makeText(LoginActivity.this, "Успешная авторизация", Toast.LENGTH_SHORT).show();
                             Intent a = new Intent(LoginActivity.this, MainActivity.class);
                             finish();
                             startActivity(a);
+                        } catch (Throwable e) {
+                            //Log.d("TAGT", "calll " + response.request());
+                            //Log.d("TAGT", "ERROR " + e.toString());
                         }
                     }
                 });
             }
         });
 
-        /*toReg.setOnClickListener(new View.OnClickListener() {
+        toReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent a = new Intent(LoginActivity.this, RegistActivity.class);
                 finish();
                 startActivity(a);
             }
-        });*/
+        });
 
     }
 

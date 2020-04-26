@@ -12,8 +12,6 @@ public class MyDoes {
     Boolean completed;
 
     public MyDoes(String id, String start_time, String end_time, String title, String description) {
-        Log.d("TAG", "MyDoes   " + id + " , " +  start_time+ " , " + end_time + " , " + title + " , " + description);
-
         this.id = id;
         this.start_time = start_time;
         this.end_time = end_time;
@@ -21,6 +19,17 @@ public class MyDoes {
         this.description = description;
 
         this.completed = false;
+    }
+
+    public MyDoes(String id, String start_time, String end_time, String title, String description, Boolean completed) {
+        Log.d("TAG", "MyDoes   " + id + " , " +  start_time+ " , " + end_time + " , " + title + " , " + description);
+
+        this.id = id;
+        this.start_time = start_time;
+        this.end_time = end_time;
+        this.title = title;
+        this.description = description;
+        this.completed = completed;
     }
 
 

@@ -1,38 +1,32 @@
 package com.example.todoapp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.loopj.android.http.HttpGet;
-
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import cz.msebera.android.httpclient.HttpResponse;
+import java.util.ArrayList;
+import java.util.Date;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import retrofit2.http.GET;
+import okhttp3.ResponseBody;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -49,17 +43,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences sh = getSharedPreferences("user", MODE_APPEND);
-        String login = sh.getString("login", "");
-        String psw = sh.getString("psw", "");
-
-        if (login == null || psw == null) {
-            Intent a = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(a);
-        } else {
-            LoginApi.setLogin(login);
-            LoginApi.setPassword(psw);
-        }
+        // Check authorization
+        /*if (LoginApi.getLogin() == null || LoginApi.getPassword() == null) {
+            checkAuth();
+        }*/
+        LoginApi.setLogin("ded");
+        LoginApi.setPassword("ded");
 
         titlepage = findViewById(R.id.titlepage);
         subtitlepage = findViewById(R.id.subtitlepage);
@@ -96,36 +85,45 @@ public class MainActivity extends AppCompatActivity {
         ourdoes.setAdapter(doesAdapter);
         doesAdapter.notifyDataSetChanged();
     }
-}
 
-/*public class SendPostRequest extends AsyncTask<String, Void, String> {
-    protected void onPreExecute(){}
-    protected String doInBackground(String... arg0) {
-        try {
-            URL url = new URL("https://studytutorial.in/post.php");
-            JSONObject postDataParams = new JSONObject();
-            postDataParams.put("name", "abc");
-            postDataParams.put("email", "abc@gmail.com");
-            Log.e("params",postDataParams.toString());
+    public void checkAuth() {
+        SharedPreferences sh = getSharedPreferences("user", MODE_APPEND);
+        String login = sh.getString("login", "");
+        String psw = sh.getString("psw", "");
 
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(15000 *//* milliseconds *//*);
-            conn.setConnectTimeout(15000 *//* milliseconds *//*);
-            conn.setRequestMethod("POST");
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
+        LoginApi.setLogin(login);
+        LoginApi.setPassword(psw);
 
-            return conn.getResponseMessage().toString();
-        }
-        catch(Exception e){
-            return new String("Exception: " + e.getMessage());
+        if (login == "" || psw == "") {
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url("http://195.133.196.6:2000/" + login)
+                    .header("Authorization", "Basic " + psw)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override public void onFailure(Call call, IOException e) {
+                    Intent a = new Intent(MainActivity.this, LoginActivity.class);
+                    finish();
+                    startActivity(a);
+                }
+
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override public void onResponse(Call call, Response response) throws IOException {
+                    Log.d("TAGT", "res " + response.code());
+                    if (response.code() != 200) {
+                        Intent a = new Intent(MainActivity.this, LoginActivity.class);
+                        finish();
+                        startActivity(a);
+                    }
+                }
+            });
         }
 
     }
+}
 
-    @Override
-    protected void onPostExecute(String result) {}
-}*/
 
 
 
