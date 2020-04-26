@@ -105,7 +105,16 @@ public class NewTaskAct extends AppCompatActivity {
                 DoesList.addTodo(event);
 
                 Intent a = new Intent(NewTaskAct.this, MainActivity.class);
-                //finish();
+                finish();
+                startActivity(a);
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent a = new Intent(NewTaskAct.this, MainActivity.class);
+                finish();
                 startActivity(a);
             }
         });

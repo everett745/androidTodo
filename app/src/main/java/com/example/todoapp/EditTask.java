@@ -113,6 +113,15 @@ public class EditTask extends AppCompatActivity {
             }
         });
 
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent a = new Intent(EditTask.this, MainActivity.class);
+                finish();
+                startActivity(a);
+            }
+        });
+
 
         // import font
         Typeface MLight = Typeface.createFromAsset(getAssets(), "fonts/ML.ttf");
