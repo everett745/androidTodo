@@ -153,10 +153,10 @@ public class DoesAdapter extends RecyclerView.Adapter<DoesAdapter.MyViewHolder> 
             @Override
             public boolean onLongClick(View v) {
                 Intent aa = new Intent(context, MainActivity.class);
-                if (myDoes.get(i).getCompleted())
+                if (myDoes.get(i).getCompleted()) {
                     DoesList.removeTodo(getID);
-
-                context.startActivity(aa);
+                    context.startActivity(aa);
+                }
                 return true;
             }
         });
