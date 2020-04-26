@@ -43,12 +43,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Check authorization
-        /*if (LoginApi.getLogin() == null || LoginApi.getPassword() == null) {
-            checkAuth();
-        }*/
-        LoginApi.setLogin("ded");
-        LoginApi.setPassword("ded");
+        checkAuth();
 
         titlepage = findViewById(R.id.titlepage);
         subtitlepage = findViewById(R.id.subtitlepage);
@@ -111,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override public void onResponse(Call call, Response response) throws IOException {
-                    Log.d("TAGT", "res " + response.code());
+
                     if (response.code() != 200) {
                         Intent a = new Intent(MainActivity.this, LoginActivity.class);
                         finish();

@@ -15,7 +15,7 @@ public class DoesList {
         DoesList.list = ls.readDb();
 
         /* СИНХРОНИЗАЦИЯ С СЕРВЕР, ПОКА ОТКЛЮЧЕНО */
-        //if (LoginApi.getLogin() != "") DataApi.getUserTodo();
+        if (LoginApi.getLogin() != "") DataApi.getUserTodo();
     }
 
     static ArrayList<MyDoes> getList() {return list;}
@@ -26,6 +26,12 @@ public class DoesList {
         DoesList.list.add(event);
         DoesList.ls.addToDo(event);
         DataApi.addEvent(event);
+    }
+    /* ДОБАВИТЬ EVENT */
+    static void addTodoLocal(MyDoes item) {
+        DoesList.list.add(item);
+        DoesList.ls.addToDo(item);
+
     }
 
     /* РЕДАКТИРОВАТЬ EVENT */
@@ -89,7 +95,13 @@ public class DoesList {
 
     /* СИНХРОНИЗАЦИЯ С СЕРВЕРОМ */
     public static void verifyData(ArrayList<MyDoes> serverData)  {
-        if (DoesList.list.size() == 0 && serverData.size() == 0 || DoesList.list.size() == 0)
+
+        if (serverData.size() != 0) {
+            for (MyDoes item: serverData)
+                if (!checkEventById(item.getId())) DoesList.addTodoLocal(item);
+        }
+
+        /*if (DoesList.list.size() == 0 && serverData.size() == 0 || DoesList.list.size() == 0)
             return;
         else if (DoesList.list.size() != 0 && serverData.size() == 0) {
             for (MyDoes item: DoesList.list) {
@@ -110,7 +122,7 @@ public class DoesList {
                 }
                 if (!check) DataApi.addEvent(item);
             }
-        }
+        }*/
     }
 
 
