@@ -14,6 +14,8 @@ public class DoesList {
         ls = new LocalStorage(context);
         DoesList.list = ls.readDb();
 
+        //LoginApi.setLogin("ded");
+        //LoginApi.setPassword("ded");
         /* СИНХРОНИЗАЦИЯ С СЕРВЕР, ПОКА ОТКЛЮЧЕНО */
         if (LoginApi.getLogin() != "") DataApi.getUserTodo();
     }
@@ -94,11 +96,18 @@ public class DoesList {
     }
 
     /* СИНХРОНИЗАЦИЯ С СЕРВЕРОМ */
-    public static void verifyData(ArrayList<MyDoes> serverData)  {
+    public static void verifyData(ArrayList<MyDoes> serverData) throws InterruptedException {
+
 
         if (serverData.size() != 0) {
             for (MyDoes item: serverData)
                 if (!checkEventById(item.getId())) DoesList.addTodoLocal(item);
+        } else if (serverData.size() == 0) {
+            for (MyDoes item: DoesList.list) {
+                DataApi.addEvent(item);
+                Thread.sleep(500);
+            }
+
         }
 
         /*if (DoesList.list.size() == 0 && serverData.size() == 0 || DoesList.list.size() == 0)

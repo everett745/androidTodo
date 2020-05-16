@@ -1,11 +1,13 @@
 package com.example.todoapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -107,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override public void onResponse(Call call, Response response) throws IOException {
-
+                    Log.d("TAGT", response.toString());
                     if (response.code() != 200) {
                         Intent a = new Intent(MainActivity.this, LoginActivity.class);
                         finish();
