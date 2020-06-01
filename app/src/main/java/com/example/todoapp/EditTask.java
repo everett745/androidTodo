@@ -1,6 +1,9 @@
 package com.example.todoapp;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.icu.text.SimpleDateFormat;
@@ -10,38 +13,28 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class EditTask extends AppCompatActivity {
 
     TextView titlepage, addtitle, adddesc, adddate;
     EditText title, description, start_time, end_time;
+    CheckBox addNotification;
     Button btnSaveTask, btnCancel;
     String keydoes;
     String unixDateStart, unixDateEnd;
+    Boolean addTimeNotification = false;
 
     Calendar dateAndTime=Calendar.getInstance();
 
@@ -52,27 +45,29 @@ public class EditTask extends AppCompatActivity {
         setContentView(R.layout.activity_new_task);
 
         titlepage = findViewById(R.id.titlepage);
-        titlepage.setText("Изменить дело");
+        titlepage.setText("Изменить задачу");
 
         addtitle = findViewById(R.id.addtitle);
         adddesc = findViewById(R.id.adddesc);
-        adddate = findViewById(R.id.adddate);
+        //adddate = findViewById(R.id.adddate);
+
+        addNotification = findViewById(R.id.addNotification);
 
         title = findViewById(R.id.titledoes);
         description = findViewById(R.id.descdoes);
-        start_time = findViewById(R.id.dateStart);
+        //start_time = findViewById(R.id.dateStart);
         end_time = findViewById(R.id.dateEnd);
 
         btnSaveTask = findViewById(R.id.btnSaveTask);
         btnSaveTask.setText("Сохранить изменения");
         btnCancel = findViewById(R.id.btnCancel);
 
-        start_time.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        /*start_time.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) setDate();
             }
-        });
+        });*/
         end_time.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -81,7 +76,7 @@ public class EditTask extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        unixDateStart = intent.getStringExtra("startTime");
+        //unixDateStart = intent.getStringExtra("startTime");
         unixDateEnd = intent.getStringExtra("endTime");
 
         try {
@@ -91,7 +86,7 @@ public class EditTask extends AppCompatActivity {
             String pattern = "dd.MM.yyyy";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
-            start_time.setText(simpleDateFormat.format(start));
+            //start_time.setText(simpleDateFormat.format(start));
             end_time.setText(simpleDateFormat.format(end));
         } catch (Throwable e) {
         }
@@ -102,23 +97,64 @@ public class EditTask extends AppCompatActivity {
         description.setText(intent.getStringExtra("description"));
         keydoes = intent.getStringExtra("ID");
 
+        // начальные значения у выбора времени
+        Calendar calendar = Calendar.getInstance();
+        final int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        final int minute = calendar.get(Calendar.MINUTE);
+
+        addNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(EditTask.this, new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            addTimeNotification = true;
+
+                            dateAndTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            dateAndTime.set(Calendar.MINUTE, minute);
+                            dateAndTime.set(Calendar.SECOND, 0);
+                            dateAndTime.set(Calendar.MILLISECOND, 0);
+                        }
+                    }, hour, minute, android.text.format.DateFormat.is24HourFormat(EditTask.this));
+
+                    timePickerDialog.show();
+                } else addTimeNotification = false;
+
+            }
+        });
+
         btnSaveTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DoesList.editTodo(new MyDoes(keydoes, unixDateStart, unixDateEnd, title.getText().toString(), description.getText().toString()));
+                String dateEnd = unixDateEnd != null ? unixDateEnd : " ";
+                String desc = description.getText().toString().length() == 0 ? " " : description.getText().toString();
+                DoesList.editTodo(new MyDoes(keydoes, " ", dateEnd, title.getText().toString(), desc));
 
-                Intent a = new Intent(EditTask.this, MainActivity.class);
-                finish();
-                startActivity(a);
+
+                if (addTimeNotification) {
+                    Intent intent = new Intent(EditTask.this, notification.class);
+                    intent.putExtra("title", title.getText().toString());
+                    intent.putExtra("desc", description.getText().toString());
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(EditTask.this, Integer.parseInt(keydoes), intent, 0);
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+                    if (dateAndTime.getTimeInMillis() - calendar.getTimeInMillis() >= 86400000)
+                        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000, pendingIntent);
+                    else
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, dateAndTime.getTimeInMillis(), pendingIntent);
+
+                    if (!addNotification.isChecked()) pendingIntent.cancel();
+                }
+
+                EditTask.super.onBackPressed();
             }
         });
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent a = new Intent(EditTask.this, MainActivity.class);
-                finish();
-                startActivity(a);
+                EditTask.super.onBackPressed();
             }
         });
 
@@ -136,8 +172,8 @@ public class EditTask extends AppCompatActivity {
         adddesc.setTypeface(MLight);
         description.setTypeface(MMedium);
 
-        adddate.setTypeface(MLight);
-        start_time.setTypeface(MMedium);
+        //adddate.setTypeface(MLight);
+        //start_time.setTypeface(MMedium);
         end_time.setTypeface(MMedium);
 
         btnSaveTask.setTypeface(MMedium);
@@ -156,9 +192,9 @@ public class EditTask extends AppCompatActivity {
 
                 unixDateStart = Long.toString(dateAndTime.getTimeInMillis() / 1000L);
 
-                start_time.setText(DateUtils.formatDateTime(EditTask.this,
+               /* start_time.setText(DateUtils.formatDateTime(EditTask.this,
                         dateAndTime.getTimeInMillis(),
-                        DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR));
+                        DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_SHOW_YEAR));*/
             }
         };
         new DatePickerDialog(EditTask.this, d,

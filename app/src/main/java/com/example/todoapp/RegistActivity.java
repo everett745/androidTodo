@@ -61,7 +61,8 @@ public class RegistActivity extends AppCompatActivity {
 
                     client.newCall(request).enqueue(new Callback() {
                         @Override public void onFailure(Call call, IOException e) {
-                            Toast.makeText(RegistActivity.this, "Неверные логин или пароль", Toast.LENGTH_SHORT).show();
+                            createToast("Ошибка сервера");
+                            Log.d("TAGT", "ERROR LoginActivity: " + e);
                         }
 
                         @Override public void onResponse(Call call, Response response) throws IOException {
@@ -77,10 +78,12 @@ public class RegistActivity extends AppCompatActivity {
                                 Intent a = new Intent(RegistActivity.this, MainActivity.class);
                                 finish();
                                 startActivity(a);
+                            } catch (IOException e) {
+                                createToast("Непредвиденная ошибка");
                             }
                         }
                     });
-                } else Toast.makeText(RegistActivity.this, "Пароли не совпадают", Toast.LENGTH_SHORT).show();
+                } else createToast("Пароли не совпадают");
             }
         });
 
@@ -93,6 +96,14 @@ public class RegistActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void createToast(String text) {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(getApplicationContext(), text , Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 }

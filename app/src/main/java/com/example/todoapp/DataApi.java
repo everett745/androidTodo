@@ -3,6 +3,7 @@ package com.example.todoapp;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -29,40 +30,36 @@ public class DataApi {
 
         Request request = new Request.Builder()
                 .url("http://195.133.196.6:2000/" + LoginApi.getLogin())
-                .header("Authorization", "Basic " + LoginApi.getLogin())
+                .header("Authorization", "Basic " + LoginApi.getPassword())
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override public void onFailure(Call call, IOException e) {
+                Log.d("TAGT", "ERROR DataApi getUser  " + e.toString());
             }
 
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override public void onResponse(Call call, Response response) throws IOException {
                 try (ResponseBody responseBody = response.body()) {
+
                     if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
-                    try {
-                        String jsonData = response.body().string();
-                        JSONObject Jobject = new JSONObject(jsonData);
-                        JSONArray Jarray = Jobject.getJSONArray("events");
+                    String jsonData = response.body().string();
+                    JSONObject Jobject = new JSONObject(jsonData);
+                    JSONArray Jarray = Jobject.getJSONArray("events");
 
-                        ArrayList<MyDoes> list = new ArrayList<MyDoes>();
-                        for (int i = 0; i < Jarray.length(); i++) {
-                            JSONObject object = Jarray.getJSONObject(i);
+                    ArrayList<MyDoes> list = new ArrayList<MyDoes>();
+                    for (int i = 0; i < Jarray.length(); i++) {
+                        JSONObject object = Jarray.getJSONObject(i);
 
-                            MyDoes item = new MyDoes((String) object.get("id"), object.get("startTime").toString(), object.get("endTime").toString(), (String) object.get("title"), (String) object.get("description"));
-                            list.add(item);
-                        }
-
-                        DoesList.verifyData(list);
-
-                    } catch (Throwable e) {
-                        Log.d("TAGT", "onResponse: " + e.toString());
+                        MyDoes item = new MyDoes((String) object.get("id"), object.get("startTime").toString(), object.get("endTime").toString(), (String) object.get("title"), (String) object.get("description"));
+                        list.add(item);
                     }
 
+                    DoesList.verifyData(list);
 
                 } catch (Throwable e) {
-                    Log.d("TAGT", "ERROR" + e.toString());
+                    Log.d("TAGT", "ERROR " + e.toString());
                 }
             }
         });
@@ -73,7 +70,7 @@ public class DataApi {
 
         JSONObject Jobject = new JSONObject();
         try {
-            Jobject.put("start_time", event.getStart_time());
+            Jobject.put("start_time", "4234235132");
             Jobject.put("end_time", event.getEnd_time());
             Jobject.put("title", event.getTitle());
             Jobject.put("description", event.getDescription());
@@ -92,7 +89,7 @@ public class DataApi {
 
         client.newCall(request).enqueue(new Callback() {
             @Override public void onFailure(Call call, IOException e) {
-                Log.d("TAGT", "ERROR : " + e);
+                Log.d("TAGT", "ERROR DataApiADD: " + e);
             }
 
             @Override public void onResponse(Call call, Response response) throws IOException {
@@ -152,7 +149,7 @@ public class DataApi {
         JSONObject Jobject = new JSONObject();
         try {
             Jobject.put("id", event.getId());
-            Jobject.put("start_time", event.getStart_time());
+            Jobject.put("start_time", "324234234");
             Jobject.put("end_time", event.getEnd_time());
             Jobject.put("title", event.getTitle());
             Jobject.put("description", event.getDescription());

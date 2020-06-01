@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class DoesList {
 
@@ -14,20 +15,20 @@ public class DoesList {
         ls = new LocalStorage(context);
         DoesList.list = ls.readDb();
 
-        //LoginApi.setLogin("ded");
-        //LoginApi.setPassword("ded");
-        /* СИНХРОНИЗАЦИЯ С СЕРВЕР, ПОКА ОТКЛЮЧЕНО */
-        if (LoginApi.getLogin() != "") DataApi.getUserTodo();
+        if (!LoginApi.getLogin().equals("")) DataApi.getUserTodo();
+        //if (LoginApi.getLogin() != "") Log.d("TAGT", "START GETUSERTODO");
     }
 
     static ArrayList<MyDoes> getList() {return list;}
-    static void setList(ArrayList<MyDoes> list) {}
+    static void setList(ArrayList<MyDoes> list) {
+        DoesList.list = list;
+        DoesList.ls.addToDos(list);
+    }
 
     /* ДОБАВИТЬ EVENT */
     static void addTodo(MyDoes event) {
         DoesList.list.add(event);
         DoesList.ls.addToDo(event);
-        DataApi.addEvent(event);
     }
     /* ДОБАВИТЬ EVENT */
     static void addTodoLocal(MyDoes item) {
@@ -42,10 +43,8 @@ public class DoesList {
             if (item.getId().equals(newTodo.getId())) {
                 DoesList.ls.editTodo(newTodo);
                 DoesList.list.set(DoesList.list.indexOf(item), newTodo);
-                DataApi.editTodo(newTodo);
             }
         }
-        //prList();
         DoesList.ls.readDb();
     }
 
@@ -57,7 +56,6 @@ public class DoesList {
             if (item.getId().equals(keydoes)) {
                 list.remove(item);
                 DoesList.ls.removeTodo(item);
-                DataApi.removeEvent(item);
             }
     }
 
@@ -95,43 +93,30 @@ public class DoesList {
         return false;
     }
 
+    public static boolean itemOnServer(String id, ArrayList<MyDoes> serverData) {
+        for (MyDoes item: serverData)
+            if (item.getId().equals(id)) return true;
+        return false;
+    }
+
     /* СИНХРОНИЗАЦИЯ С СЕРВЕРОМ */
     public static void verifyData(ArrayList<MyDoes> serverData) throws InterruptedException {
 
-
-        if (serverData.size() != 0) {
-            for (MyDoes item: serverData)
-                if (!checkEventById(item.getId())) DoesList.addTodoLocal(item);
-        } else if (serverData.size() == 0) {
+        if (DoesList.list.size() == 0) DoesList.setList(serverData);
+        else {
             for (MyDoes item: DoesList.list) {
-                DataApi.addEvent(item);
-                Thread.sleep(500);
+                Thread.sleep(300);
+                if (!itemOnServer(item.getId(), serverData)) DataApi.addEvent(item);
             }
 
+            for (MyDoes sItem: serverData) {
+                Thread.sleep(500);
+                if (!checkEventById(sItem.getId())) DataApi.removeEvent(sItem);
+                else DataApi.editTodo(Objects.requireNonNull(getById(sItem.getId())));
+                Thread.sleep(300);
+            }
         }
 
-        /*if (DoesList.list.size() == 0 && serverData.size() == 0 || DoesList.list.size() == 0)
-            return;
-        else if (DoesList.list.size() != 0 && serverData.size() == 0) {
-            for (MyDoes item: DoesList.list) {
-                DataApi.addEvent(item);
-            }
-
-            return;
-        } else {
-            for (MyDoes item: serverData)
-                if (checkEventById(item.getId()))
-                    DataApi.editTodo(getById(item.getId()));
-                else DataApi.removeEvent(item);
-
-            for (MyDoes item: DoesList.list) {
-                boolean check = false;
-                for (MyDoes itemS: serverData) {
-                    if (item.getId().equals(itemS.getId())) check = true;
-                }
-                if (!check) DataApi.addEvent(item);
-            }
-        }*/
     }
 
 

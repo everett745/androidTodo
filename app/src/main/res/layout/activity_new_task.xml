@@ -2,7 +2,6 @@
 <LinearLayout
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,22 +34,22 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="-60dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="343dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="-60dp"
+        android:layout_marginRight="16dp"
         android:background="@drawable/bgitemdoes"
         android:orientation="vertical"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp">
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
 
         <LinearLayout
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/addtitle"
@@ -75,12 +74,12 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/adddesc"
@@ -98,20 +97,19 @@
                 android:background="@drawable/bginputtask"
                 android:hint="Краткое описание"
                 android:inputType="text"
-                android:maxLength="25"
                 android:paddingLeft="12dp"
                 android:textColor="@color/colorSecondaryText"
-                android:textColorHint="@color/colorLightText"/>
+                android:textColorHint="@color/colorLightText" />
 
         </LinearLayout>
 
-        <LinearLayout
+        <!--<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/adddate"
@@ -131,17 +129,17 @@
                 android:inputType="text"
                 android:paddingLeft="12dp"
                 android:textColor="@color/colorSecondaryText"
-                android:textColorHint="@color/colorLightText"/>
+                android:textColorHint="@color/colorLightText" />
 
-        </LinearLayout>
+        </LinearLayout>-->
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/enddate"
@@ -161,9 +159,18 @@
                 android:inputType="text"
                 android:paddingLeft="12dp"
                 android:textColor="@color/colorSecondaryText"
-                android:textColorHint="@color/colorLightText"/>
+                android:textColorHint="@color/colorLightText" />
 
         </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/addNotification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_marginBottom="0dp"
+            android:text="Добавить напоминание?"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
