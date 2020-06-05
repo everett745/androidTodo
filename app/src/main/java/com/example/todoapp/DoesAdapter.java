@@ -112,6 +112,7 @@ public class DoesAdapter extends RecyclerView.Adapter<DoesAdapter.MyViewHolder> 
         });
 
         if (getCompleted) {
+            myViewHolder.itemView.setBackground(myViewHolder.itemView.getContext().getDrawable(R.drawable.bgitemdoesfinish));
             checkBox.setChecked(true);
         }
     }
