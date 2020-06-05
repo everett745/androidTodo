@@ -46,7 +46,7 @@ public class RegistActivity extends AppCompatActivity {
         singIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (password.getText() == passwordRep.getText()) {
+                if (password.getText().toString().equals(passwordRep.getText().toString())) {
                     OkHttpClient client = new OkHttpClient();
 
                     RequestBody formBody = new FormBody.Builder()

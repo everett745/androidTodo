@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean checkAuth() {
-        SharedPreferences sh = getSharedPreferences("user", MODE_APPEND);
+        SharedPreferences sh = getSharedPreferences("user", MODE_PRIVATE);
         String login = sh.getString("login", "");
         String psw = sh.getString("psw", "");
         LoginApi.setLogin(login);

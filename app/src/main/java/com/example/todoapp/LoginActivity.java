@@ -72,7 +72,9 @@ public class LoginActivity extends AppCompatActivity {
                             Intent a = new Intent(LoginActivity.this, MainActivity.class);
                             finish();
                             startActivity(a);
-                        } catch (Throwable e) {
+                        } catch (IOException ioE) {
+                            createToast("Непредвиденная ошибка");
+                        }catch (Throwable e) {
                             createToast("Неверные логин или пароль");
                         }
                     }
