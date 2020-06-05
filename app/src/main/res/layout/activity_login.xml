@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorLightText">
+    android:background="@color/bgPrimary">
 
 
     <RelativeLayout
@@ -38,8 +38,8 @@
                 android:hint="Логин"
                 android:inputType="text"
                 android:paddingLeft="12dp"
-                android:textColor="@color/colorSecondaryText"
-                android:textColorHint="@color/colorLightText" />
+                android:textColor="@color/colorLightText"
+                android:textColorHint="@color/hintText" />
 
             <EditText
                 android:id="@+id/password"
@@ -50,8 +50,8 @@
                 android:hint="Пароль"
                 android:inputType="textPassword"
                 android:paddingLeft="12dp"
-                android:textColor="@color/colorSecondaryText"
-                android:textColorHint="@color/colorLightText" />
+                android:textColor="@color/colorLightText"
+                android:textColorHint="@color/hintText" />
 
             <Button
                 android:id="@+id/btnLogin"
@@ -60,7 +60,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/bgbtncreate"
                 android:text="Войти"
-                android:textColor="@color/colorText"
+                android:textColor="@color/colorLightText"
                 android:textSize="22sp" />
         </LinearLayout>
 
@@ -84,7 +84,7 @@
                 android:textAllCaps="false"
                 android:text="Регистрация"
                 android:background="#00000000"
-                android:textColor="@color/colorSecondaryText"
+                android:textColor="@color/colorLightText"
                 android:textSize="18sp"/>
         </LinearLayout>
     </RelativeLayout>

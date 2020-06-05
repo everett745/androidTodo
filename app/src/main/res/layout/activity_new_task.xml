@@ -22,7 +22,7 @@
             android:layout_marginBottom="18dp"
             android:text="Новая задача"
             android:textAlignment="center"
-            android:textColor="@color/colorText"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="32sp" />
 
         <View
@@ -68,8 +68,8 @@
                 android:hint="Название задачи"
                 android:inputType="text"
                 android:paddingLeft="12dp"
-                android:textColor="@color/colorSecondaryText"
-                android:textColorHint="@color/colorLightText" />
+                android:textColor="@color/colorLightText"
+                android:textColorHint="@color/hintText" />
 
         </LinearLayout>
 
@@ -98,8 +98,8 @@
                 android:hint="Краткое описание"
                 android:inputType="text"
                 android:paddingLeft="12dp"
-                android:textColor="@color/colorSecondaryText"
-                android:textColorHint="@color/colorLightText" />
+                android:textColor="@color/colorLightText"
+                android:textColorHint="@color/hintText" />
 
         </LinearLayout>
 
@@ -158,8 +158,8 @@
                 android:hint="Когда закончить"
                 android:inputType="text"
                 android:paddingLeft="12dp"
-                android:textColor="@color/colorSecondaryText"
-                android:textColorHint="@color/colorLightText" />
+                android:textColor="@color/colorLightText"
+                android:textColorHint="@color/hintText" />
 
         </LinearLayout>
 
@@ -181,10 +181,10 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="16dp"
-        android:background="@drawable/bgbtncreate"
+        android:background="@drawable/bgbtnnew"
         android:text="Добавить задачу"
         android:textAllCaps="false"
-        android:textColor="@color/colorText"
+        android:textColor="@color/colorLightText"
         android:textSize="22sp" />
 
     <Button
@@ -197,7 +197,7 @@
         android:background="@drawable/bgbtncancel"
         android:text="Отмена"
         android:textAllCaps="false"
-        android:textColor="@color/colorSecondaryText"
+        android:textColor="@color/colorLightText"
         android:textSize="22sp" />
 
 

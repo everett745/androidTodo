@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorLightText">
+    android:background="@color/bgPrimary">
 
 
     <RelativeLayout
@@ -38,8 +38,8 @@
                 android:hint="Логин"
                 android:inputType="text"
                 android:paddingLeft="12dp"
-                android:textColor="@color/colorSecondaryText"
-                android:textColorHint="@color/colorLightText" />
+                android:textColor="@color/colorLightText"
+                android:textColorHint="@color/hintText" />
 
             <EditText
                 android:id="@+id/password"
@@ -50,8 +50,8 @@
                 android:hint="Пароль"
                 android:inputType="text"
                 android:paddingLeft="12dp"
-                android:textColor="@color/colorSecondaryText"
-                android:textColorHint="@color/colorLightText" />
+                android:textColor="@color/colorLightText"
+                android:textColorHint="@color/hintText" />
 
             <EditText
                 android:id="@+id/passwordRepeat"
@@ -62,8 +62,8 @@
                 android:hint="Повторите пароль"
                 android:inputType="text"
                 android:paddingLeft="12dp"
-                android:textColor="@color/colorSecondaryText"
-                android:textColorHint="@color/colorLightText" />
+                android:textColor="@color/colorLightText"
+                android:textColorHint="@color/hintText" />
 
             <Button
                 android:id="@+id/btnLogin"
@@ -72,7 +72,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/bgbtncreate"
                 android:text="Зарегестрироваться"
-                android:textColor="@color/colorText"
+                android:textColor="@color/colorLightText"
                 android:textSize="22sp" />
         </LinearLayout>
 
@@ -94,7 +94,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
-        android:textColor="@color/colorSecondaryText"
+        android:textColor="@color/colorLightText"
         android:text="Уже есть аккаунт?"
         android:textSize="22sp"
         android:layout_alignParentLeft="true"

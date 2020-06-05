@@ -26,7 +26,7 @@
                 android:layout_height="32dp"
                 android:layout_marginTop="15dp"
                 android:text="@string/buy_whiskas"
-                android:textColor="@color/colorPrimaryText"
+                android:textColor="@color/colorLightText"
                 android:textSize="22sp" />
 
             <TextView
@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="38dp"
                 android:text="@string/nearly_market_good_to"
-                android:textColor="@color/colorSecondaryText"
+                android:textColor="@color/colorLightText"
                 android:textSize="18sp" />
 
         </LinearLayout>
