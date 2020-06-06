@@ -1,9 +1,7 @@
 package com.example.todoapp;
 
-import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -24,6 +22,9 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class DataApi {
+
+    //AsyncTask<Void,Void,String> task;
+
 
     public static void getUserTodo() {
         OkHttpClient client = new OkHttpClient();
@@ -64,6 +65,67 @@ public class DataApi {
             }
         });
     }
+
+
+    /*public void getUserTodo() {
+        if (task == null){
+            task = new GetUserTask();
+            task.execute();
+            return;
+        }
+
+        while (task.getStatus() != AsyncTask.Status.FINISHED) {}
+        task = new GetUserTask();
+        task.execute();
+    }
+
+
+
+    static class GetUserTask extends AsyncTask<Void,Void,String> {
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url("http://195.133.196.6:2000/" + LoginApi.getLogin())
+                    .header("Authorization", "Basic " + LoginApi.getPassword())
+                    .build();
+
+            try (Response response = client.newCall(request).execute()) {
+                return response.body().string();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+
+        @Override
+        protected void onPostExecute(String jsonData) {
+            super.onPostExecute(jsonData);
+            if (!jsonData.isEmpty()) {
+                try {
+                    JSONObject Jobject = new JSONObject(jsonData);
+                    JSONArray Jarray = Jobject.getJSONArray("events");
+
+                    ArrayList<MyDoes> list = new ArrayList<MyDoes>();
+                    for (int i = 0; i < Jarray.length(); i++) {
+                        JSONObject object = Jarray.getJSONObject(i);
+
+                        MyDoes item = new MyDoes((String) object.get("id"), object.get("startTime").toString(), object.get("endTime").toString(), (String) object.get("title"), (String) object.get("description"));
+                        list.add(item);
+                    }
+
+                    DoesList.verifyData(list);
+                } catch (JSONException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+*/
+
 
     public static void addEvent(MyDoes event) {
         OkHttpClient client = new OkHttpClient();

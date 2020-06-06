@@ -10,11 +10,11 @@ public class DoesList {
 
     private static ArrayList<MyDoes> list;
     private static LocalStorage ls;
+    private static DataApi dataApi;
 
     DoesList(Context context) {
         ls = new LocalStorage(context);
         DoesList.list = ls.readDb();
-
         if (!LoginApi.getLogin().equals("")) DataApi.getUserTodo();
         //if (LoginApi.getLogin() != "") Log.d("TAGT", "START GETUSERTODO");
     }

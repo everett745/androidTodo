@@ -1,15 +1,12 @@
 package com.example.todoapp;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
-import android.util.Log;
-import android.widget.Toast;
+
 
 import androidx.annotation.RequiresApi;
 
 import java.io.IOException;
-import java.nio.channels.AsynchronousCloseException;
+
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -38,11 +35,13 @@ public class LoginApi {
     }
 
 
-    public static void checkAuth() {
+
+    /*public static void checkAuth() {
+        DataApi dataApi = new DataApi();
         String login = LoginApi.getLogin();
         String psw = LoginApi.getPassword();
 
-        if (login == "" || psw == "") {
+        if (login.isEmpty() || psw.isEmpty()) {
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
@@ -57,12 +56,12 @@ public class LoginApi {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override public void onResponse(Call call, Response response) throws IOException {
                     if (response.code() == 200) {
-                        DataApi.getUserTodo();
+                        dataApi.getUserTodo();
                     }
                 }
             });
         }
-    }
+    }*/
 
 
 }

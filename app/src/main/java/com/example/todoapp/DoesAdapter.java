@@ -103,12 +103,11 @@ public class DoesAdapter extends RecyclerView.Adapter<DoesAdapter.MyViewHolder> 
             public void onClick(View v) {
                 if (checkBox.isChecked()) {
                     myViewHolder.itemView.setBackground(myViewHolder.itemView.getContext().getDrawable(R.drawable.bgitemdoesfinish));
-                    DoesList.switchCompleted(myDoes.get(i));
                 } else {
                     myViewHolder.itemView.setBackground(myViewHolder.itemView.getContext().getDrawable(R.drawable.bgitemdoes));
-                    DoesList.switchCompleted(myDoes.get(i));
                 }
-             }
+                DoesList.switchCompleted(myDoes.get(i));
+            }
         });
 
         if (getCompleted) {

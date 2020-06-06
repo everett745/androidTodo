@@ -1,35 +1,20 @@
 package com.example.todoapp;
 
-import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -95,12 +80,12 @@ public class MainActivity extends AppCompatActivity {
         LoginApi.setLogin(login);
         LoginApi.setPassword(psw);
 
-        if (login == "") {
+        if (login.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Для первого запуска необходима авторизация" , Toast.LENGTH_LONG).show();
 
-            Intent a = new Intent(MainActivity.this, LoginActivity.class);
+            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
             finish();
-            startActivity(a);
+            startActivity(loginIntent);
         } else {
             LoginApi.setLogin(login);
             LoginApi.setPassword(psw);

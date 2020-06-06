@@ -3,8 +3,9 @@ package com.example.todoapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,12 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -28,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     Button singIn;
     Button toReg;
 
+    LogInTask task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,63 +41,75 @@ public class LoginActivity extends AppCompatActivity {
         singIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OkHttpClient client = new OkHttpClient();
-
-                Request request = new Request.Builder()
-                        .url("http://195.133.196.6:2000/" + login.getText().toString())
-                        .header("Authorization", "Basic " + password.getText().toString())
-                        .build();
-
-                client.newCall(request).enqueue(new Callback() {
-                    @Override public void onFailure(Call call, IOException e) {
-                        Log.d("TAGT", "ERROR LoginActivity: " + e);
-                        createToast("Ошибка сервера");
-                    }
-
-                    @Override public void onResponse(Call call, Response response) throws IOException {
-                        try (ResponseBody responseBody = response.body()) {
-                            Log.d("TAGT", "onResponse: " + response.body());
-                            Log.d("TAGT", "onResponse: " + response.code());
-                            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-                            SharedPreferences myPref;
-                            myPref = getSharedPreferences("user", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = myPref.edit();
-                            editor.putString("login", login.getText().toString());
-                            editor.putString("psw", password.getText().toString());
-                            editor.commit();
-
-                            createToast("Успешная авторизация");
-                            Intent a = new Intent(LoginActivity.this, MainActivity.class);
-                            finish();
-                            startActivity(a);
-                        } catch (IOException ioE) {
-                            createToast("Непредвиденная ошибка");
-                        }catch (Throwable e) {
-                            createToast("Неверные логин или пароль");
-                        }
-                    }
-                });
+                if (task == null){
+                    task = new LogInTask();
+                    task.execute(login.getText().toString().trim(), password.getText().toString().trim());
+                }
+                else if(task.getStatus() == AsyncTask.Status.FINISHED) {
+                    task = new LogInTask();
+                    task.execute(login.getText().toString().trim(), password.getText().toString().trim());
+                }
             }
         });
+
 
         toReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent a = new Intent(LoginActivity.this, RegistActivity.class);
+                Intent startRegisterActivity = new Intent(LoginActivity.this, RegistActivity.class);
                 finish();
-                startActivity(a);
+                startActivity(startRegisterActivity);
             }
         });
 
     }
 
-    public void createToast(String text) {
-        runOnUiThread(new Runnable() {
-            public void run() {
-                Toast.makeText(getApplicationContext(), text , Toast.LENGTH_LONG).show();
+
+      class  LogInTask extends AsyncTask <String,Void,String>{
+
+        @Override
+        protected String doInBackground(String... strings) {
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url("http://195.133.196.6:2000/" + strings[0])
+                    .header("Authorization", "Basic " + strings[1])
+                    .build();
+
+            try (Response response = client.newCall(request).execute()) {
+               if (response.isSuccessful()){
+                   return "";
+               }
+               else {
+                   return "Неверный логин или пароль";
+               }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "Сервер Недоступен";
             }
-        });
+        }
+
+
+         @Override
+        protected void onPostExecute(String error) {
+            super.onPostExecute(error);
+            if (error.isEmpty()){
+                SharedPreferences myPref;
+                myPref = getSharedPreferences("user", MODE_PRIVATE);
+                SharedPreferences.Editor editor = myPref.edit();
+                editor.putString("login", login.getText().toString());
+                editor.putString("psw", password.getText().toString());
+                editor.commit();
+
+                Toast.makeText(getApplicationContext(),"Успешная авторизация",Toast.LENGTH_SHORT).show();
+                Intent startMainActivity = new Intent(LoginActivity.this, MainActivity.class);
+                finish();
+                startActivity(startMainActivity);
+            }
+            else {
+                Toast.makeText(getApplicationContext(),error,Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 }
