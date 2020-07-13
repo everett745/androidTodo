@@ -4,68 +4,67 @@
     android:layout_width="match_parent"
     android:background="@drawable/bgitemdoes"
     android:orientation="horizontal"
-    android:layout_marginBottom="20dp"
+    android:layout_marginBottom="10dp"
     android:layout_height="100dp">
 
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp" />
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        android:layout_marginStart="10dp" />
 
-        <LinearLayout
-            android:layout_width="180dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/titledoes"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:layout_marginTop="15dp"
-                android:text="@string/buy_whiskas"
-                android:textColor="@color/colorLightText"
+        <TextView
+            android:id="@+id/titledoes"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/buy_whiskas"
+            android:textColor="@color/colorLightText"
                 android:textSize="22sp" />
 
-            <TextView
-                android:id="@+id/descdoes"
-                android:layout_width="wrap_content"
-                android:layout_height="38dp"
-                android:text="@string/nearly_market_good_to"
-                android:textColor="@color/colorLightText"
-                android:textSize="18sp" />
+        <TextView
+            android:id="@+id/descdoes"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:text="@string/nearly_market_good_to"
+            android:textColor="@color/colorLightText"
+            android:textSize="18sp" />
 
-        </LinearLayout>
+    </LinearLayout>
 
-        <RelativeLayout
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_height="match_parent">
+
+        <!--<TextView
+            android:id="@+id/dateStart"
             android:layout_width="match_parent"
-            android:layout_marginEnd="8dp"
-            android:layout_height="match_parent">
+            android:layout_height="20dp"
+            android:gravity="right"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="5dp"
+            android:text="Tomorrow"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp" />-->
 
-            <!--<TextView
-                android:id="@+id/dateStart"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:gravity="right"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="5dp"
-                android:text="Tomorrow"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp" />-->
+        <TextView
+            android:id="@+id/dateEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:text="@string/tomorrow"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/dateEnd"
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginEnd="5dp"
-                android:gravity="right"
-                android:text="@string/tomorrow"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp" />
-
-        </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

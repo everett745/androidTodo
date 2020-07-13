@@ -99,7 +99,6 @@ public class RegistActivity extends AppCompatActivity {
                     return "";
                 }
                 else {
-                    onProgressUpdate();
                     if (response.code() == 409)
                     return "Пользователь уже существует";
                 }

@@ -1,104 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="@color/bgPrimary">
-    
-    
+    android:background="@color/bgPrimary"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
     <LinearLayout
-        android:layout_alignParentStart="true"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
-        android:layout_height="150dp">
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="10"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/titlepage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:text="Задачи"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="32sp"
+            android:layout_weight="2" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2" />
+
+
+        <Button
+            android:id="@+id/btnAddNew"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00FFFFFF"
+            android:text="+"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="40sp"
+            android:layout_weight="3"
+            android:layout_margin="10dp"
+
+            />
+
+
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="-10dp"
+        android:layout_weight="1">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="20dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/ourdoes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:scrollbarTrackVertical="@color/colorLightText"
+                android:layout_weight="1" />
 
             <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/titlepage"
-                    android:textSize="32sp"
-                    android:textColor="@color/colorPrimaryText"
-                    android:text="Задачи"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/subtitlepage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Давай закончим это поскорей"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="18sp" />
-                
-            </LinearLayout>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimaryLight"
+                android:layout_weight="14" />
 
         </LinearLayout>
 
-        <View
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:background="@color/colorPrimaryDark"
-            android:layout_height="1dp" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
 
-    </LinearLayout>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnCamera"
+            app:srcCompat="@android:drawable/ic_menu_camera"
+            android:layout_margin="15dp"
+            android:layout_gravity="bottom|right" />
+    </FrameLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimaryLight">
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/ourdoes"
-        android:layout_width="405dp"
-        android:layout_height="649dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="125dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="90dp"
-        android:scrollbarTrackVertical="@color/colorLightText">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="10dp"
-        android:orientation="vertical"
-        android:paddingTop="8dp">
-
-    </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnAddNew"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:clickable="true"
-        app:srcCompat="@drawable/add1" />
-
-
-</RelativeLayout>
+</LinearLayout>
