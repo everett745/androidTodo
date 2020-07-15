@@ -10,7 +10,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 
-public class notification extends BroadcastReceiver {
+public class Notification extends BroadcastReceiver {
 
     private static final String CHANNEL_ID = "1";
 

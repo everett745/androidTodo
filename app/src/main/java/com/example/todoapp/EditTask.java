@@ -10,7 +10,6 @@ import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -133,7 +132,7 @@ public class EditTask extends AppCompatActivity {
 
 
                 if (addTimeNotification) {
-                    Intent intent = new Intent(EditTask.this, notification.class);
+                    Intent intent = new Intent(EditTask.this, Notification.class);
                     intent.putExtra("title", title.getText().toString());
                     intent.putExtra("desc", description.getText().toString());
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(EditTask.this, Integer.parseInt(keydoes), intent, 0);

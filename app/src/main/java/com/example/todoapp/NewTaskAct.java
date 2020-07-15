@@ -4,12 +4,10 @@ import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -107,7 +105,7 @@ public class NewTaskAct extends AppCompatActivity {
                 DoesList.addTodo(event);
 
                 if (addTimeNotification) {
-                    Intent intent = new Intent(NewTaskAct.this, notification.class);
+                    Intent intent = new Intent(NewTaskAct.this, Notification.class);
                     intent.putExtra("title", title.getText().toString());
                     intent.putExtra("desc", description.getText().toString());
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(NewTaskAct.this, Integer.parseInt(doesNum), intent, 0);

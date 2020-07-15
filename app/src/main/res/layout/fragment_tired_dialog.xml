@@ -5,31 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent"
-    tools:context=".RestedDialogFragment">
+    tools:context=".TiredDialogFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/rested_bg"
+        android:background="@drawable/tired_bg"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/fireworks_top"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/look_goog_bg_top"
-            android:layout_marginTop="15dp" />
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:srcCompat="@drawable/look_tired_bg_top" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/look_rested"
+            android:text="@string/look_tired"
             android:gravity="center"
             android:paddingHorizontal="25dp"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/colorLightText" />
+            android:textColor="@color/colorNightStars" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -37,19 +35,11 @@
             android:layout_marginBottom="10dp">
 
             <ImageView
-                android:id="@+id/fireworks_left"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignParentStart="true"
-                app:srcCompat="@drawable/look_goog_bg_left"
-                android:layout_marginStart="10dp" />
-
-            <ImageView
                 android:id="@+id/fireworks_right"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:layout_alignParentEnd="true"
-                app:srcCompat="@drawable/look_goog_bg_right"
+                app:srcCompat="@drawable/look_tired_bg_bottom"
                 android:layout_marginEnd="10dp" />
         </RelativeLayout>
 
@@ -57,10 +47,10 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/rested_exit_button"
+        android:id="@+id/tired_exit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorLightText"
+        android:textColor="@color/colorNightStars"
         android:text="@string/exit_char"
         android:background="@color/transparent"
         android:layout_gravity="end"

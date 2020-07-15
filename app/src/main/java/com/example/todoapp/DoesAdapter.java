@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +84,7 @@ public class DoesAdapter extends RecyclerView.Adapter<DoesAdapter.MyViewHolder> 
             public boolean onLongClick(View v) {
                 Intent aa = new Intent(context, MainActivity.class);
                 if (myDoes.get(i).getCompleted()) {
-                    Intent intent = new Intent(context, notification.class);
+                    Intent intent = new Intent(context, Notification.class);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Integer.parseInt(getID), intent, 0);
                     pendingIntent.cancel();
 

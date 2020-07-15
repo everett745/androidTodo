@@ -1,6 +1,5 @@
 package com.example.todoapp;
 
-
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -15,9 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-
-public class RestedDialogFragment extends DialogFragment {
-
+public class TiredDialogFragment extends DialogFragment {
     private Button exitButton;
 
 
@@ -29,8 +26,8 @@ public class RestedDialogFragment extends DialogFragment {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         }
-        View view = inflater.inflate(R.layout.fragment_rested_dialog, container, false);
-        exitButton = view.findViewById(R.id.rested_exit_button);
+        View view = inflater.inflate(R.layout.fragment_tired_dialog, container, false);
+        exitButton = view.findViewById(R.id.tired_exit_button);
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

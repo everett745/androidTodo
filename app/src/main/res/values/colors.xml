@@ -16,4 +16,7 @@
     <color name="bgPrimary">#E1E2E1</color>
     <color name="bgWhite">#FFFFFF</color>
     <color name="transparent">#000FFFFF</color>
+
+    <color name="colorDialogTired">#635485</color>
+    <color name="colorNightStars">#FFF272</color>
 </resources>

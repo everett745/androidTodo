@@ -5,4 +5,5 @@
     <string name="tomorrow">Tomorrow</string>
     <string name="look_rested">Вы ещё полны сил, так держать!</string>
     <string name="exit_char">×</string>
+    <string name="look_tired">Выглядите уставшим, не желаете отдохнуть?</string>
 </resources>

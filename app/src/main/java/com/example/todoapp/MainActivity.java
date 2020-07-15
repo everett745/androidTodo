@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -22,6 +23,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -81,12 +85,10 @@ public class MainActivity extends AppCompatActivity {
             ourdoes.setAdapter(doesAdapter);
             doesAdapter.notifyDataSetChanged();
             btnCamera = findViewById(R.id.btnCamera);
-            DialogFragment fragment = new RestedDialogFragment();
             btnCamera.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //CameraAPI.requestVideo(MainActivity.this);
-                    fragment.show(getSupportFragmentManager(), "test");
+                    CameraAPI.requestVideo(MainActivity.this);
                 }
             });
         }
@@ -100,10 +102,9 @@ public class MainActivity extends AppCompatActivity {
         if (data == null)
             return;
         Uri videoURI = CameraAPI.getVideoUri(requestCode, resultCode, data);
-        Cutter decoder = new Cutter(this);
-        Bitmap[] pictures = decoder.doInBackground(videoURI);
-        SendTask task = new SendTask();
-        task.execute(pictures);
+        Cutter decoder = new Cutter();
+        decoder.execute(videoURI);
+
     }
 
 
@@ -140,11 +141,12 @@ public class MainActivity extends AppCompatActivity {
             try (Response response = httpClient.newCall(request).execute()) {
                 if (response.isSuccessful()) {
                     String respBody = response.body().string();
-                    return Boolean.parseBoolean(respBody);
+                    return new JSONObject(respBody).getBoolean("isTired");
+
                 } else {
                     return null;
                 }
-            } catch (IOException e) {
+            } catch (IOException | JSONException e) {
                 e.printStackTrace();
                 return null;
             }
@@ -152,7 +154,41 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-            Toast.makeText(MainActivity.this, String.valueOf(aBoolean.booleanValue()), Toast.LENGTH_LONG).show();
+            DialogFragment responseFragment;
+            if (aBoolean) {
+                responseFragment = new TiredDialogFragment();
+            } else {
+                responseFragment = new RestedDialogFragment();
+            }
+            responseFragment.show(getSupportFragmentManager(), "Dialog");
+        }
+    }
+
+    public class Cutter extends AsyncTask<Uri, Void, Bitmap[]> {
+        private int fps = 5;
+        private int videoLength = 3;
+        private final int second = 1_000_000;
+
+
+        @Override
+        protected Bitmap[] doInBackground(Uri... uris) {
+            if (uris == null || uris[0] == null || uris.length == 0)
+                return null;
+            Bitmap[] frames = new Bitmap[fps * videoLength];
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            retriever.setDataSource(MainActivity.this, uris[0]);
+            for (int i = 0; i < fps * videoLength; i++) {
+                int current_time = second * i / fps;
+                frames[i] = retriever.getFrameAtTime(current_time, MediaMetadataRetriever.OPTION_CLOSEST);
+            }
+            return frames;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap[] bitmaps) {
+            super.onPostExecute(bitmaps);
+            SendTask task = new SendTask();
+            task.execute(bitmaps);
         }
     }
 
