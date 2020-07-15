@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -80,10 +81,12 @@ public class MainActivity extends AppCompatActivity {
             ourdoes.setAdapter(doesAdapter);
             doesAdapter.notifyDataSetChanged();
             btnCamera = findViewById(R.id.btnCamera);
+            DialogFragment fragment = new RestedDialogFragment();
             btnCamera.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CameraAPI.requestVideo(MainActivity.this);
+                    //CameraAPI.requestVideo(MainActivity.this);
+                    fragment.show(getSupportFragmentManager(), "test");
                 }
             });
         }

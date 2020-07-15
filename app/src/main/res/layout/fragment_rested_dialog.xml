@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    tools:context=".RestedDialogFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rested_bg"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/fireworks_top"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/look_goog_bg_top"
+            android:layout_marginTop="15dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/look_rested"
+            android:gravity="center"
+            android:paddingHorizontal="25dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorLightText" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <ImageView
+                android:id="@+id/fireworks_left"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentStart="true"
+                app:srcCompat="@drawable/look_goog_bg_left"
+                android:layout_marginStart="10dp" />
+
+            <ImageView
+                android:id="@+id/fireworks_right"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentEnd="true"
+                app:srcCompat="@drawable/look_goog_bg_right"
+                android:layout_marginEnd="10dp" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/exit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorLightText"
+        android:text="@string/exit_char"
+        android:background="@color/transparent"
+        android:layout_gravity="end"
+        android:textSize="30sp"
+        android:layout_marginEnd="-18dp"
+
+        />
+
+
+</FrameLayout>

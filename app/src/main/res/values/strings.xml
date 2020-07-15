@@ -3,4 +3,6 @@
     <string name="buy_whiskas">Buy whiskas</string>
     <string name="nearly_market_good_to">Nearly market good to</string>
     <string name="tomorrow">Tomorrow</string>
+    <string name="look_rested">Вы ещё полны сил, так держать!</string>
+    <string name="exit_char">×</string>
 </resources>
