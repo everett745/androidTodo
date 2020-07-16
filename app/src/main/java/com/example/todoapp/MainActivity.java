@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,14 +42,16 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView titlePage;
-    Button btnAddNew;
+    private TextView titlePage;
+    private Button btnAddNew;
 
-    FloatingActionButton btnCamera;
+    private FloatingActionButton btnCamera;
 
-    RecyclerView ourdoes;
-    DoesAdapter doesAdapter;
-    DoesList dl;
+    private RecyclerView ourdoes;
+    private DoesAdapter doesAdapter;
+    private DoesList dl;
+
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
             btnAddNew = findViewById(R.id.btnAddNew);
             Typeface MLight = Typeface.createFromAsset(getAssets(), "fonts/ML.ttf");
             Typeface MMedium = Typeface.createFromAsset(getAssets(), "fonts/MM.ttf");
+
+            progressBar = findViewById(R.id.progress_bar);
 
             titlePage.setTypeface(MMedium);
             //btnAddNew.setTypeface(MLight);
@@ -104,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         Uri videoURI = CameraAPI.getVideoUri(requestCode, resultCode, data);
         Cutter decoder = new Cutter();
         decoder.execute(videoURI);
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
 
@@ -161,19 +166,21 @@ public class MainActivity extends AppCompatActivity {
                 responseFragment = new RestedDialogFragment();
             }
             responseFragment.show(getSupportFragmentManager(), "Dialog");
+            progressBar.setVisibility(View.INVISIBLE);
+
         }
     }
 
-    public class Cutter extends AsyncTask<Uri, Void, Bitmap[]> {
+    class Cutter extends AsyncTask<Uri, Void, Bitmap[]> {
         private int fps = 5;
-        private int videoLength = 3;
         private final int second = 1_000_000;
 
 
         @Override
         protected Bitmap[] doInBackground(Uri... uris) {
-            if (uris == null || uris[0] == null || uris.length == 0)
+            if (uris == null || uris[0] == null)
                 return null;
+            int videoLength = 3;
             Bitmap[] frames = new Bitmap[fps * videoLength];
             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
             retriever.setDataSource(MainActivity.this, uris[0]);

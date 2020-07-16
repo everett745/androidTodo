@@ -44,15 +44,20 @@
             android:layout_margin="10dp"
 
             />
-
-
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@android:style/Widget.Material.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:layout_marginTop="-9dp"
+        android:visibility="invisible" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="-10dp"
         android:layout_weight="1">
 
         <LinearLayout
@@ -64,8 +69,8 @@
                 android:id="@+id/ourdoes"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
                 android:scrollbarTrackVertical="@color/colorLightText"
                 android:layout_weight="1" />
 
@@ -77,6 +82,7 @@
 
         </LinearLayout>
 
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
 
             android:layout_width="wrap_content"
@@ -85,6 +91,8 @@
             app:srcCompat="@android:drawable/ic_menu_camera"
             android:layout_margin="15dp"
             android:layout_gravity="bottom|right" />
+
+
     </FrameLayout>
 
 </LinearLayout>
